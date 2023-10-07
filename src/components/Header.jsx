@@ -1,16 +1,20 @@
 import { Flex, Image, useColorMode } from "@chakra-ui/react"
 
 const Header = () => {
-    useColorMode()
+    const {colorMode, toggleColorMode} = useColorMode()
     return (
 
     <Flex justifyContent={"center"} mt={6} mb={12}>
         <Image 
             cursor={"pointer"}
             alt="logo"
-            src={colorMode ==='Dark' ? "/light-logo.svg" : "/dark-logo.svg"}
+            w={6}
+            src={colorMode ==='dark' ? "/light-logo.svg" : "/dark-logo.svg"}
+            onClick={toggleColorMode}
         />
-    </Flex>)
+    </Flex>
+
+    )
 }
 
 export default Header
