@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react'
 import * as ReactDOM from 'react-dom/client'
 import App from './App'
+import "./index.css"
 import { mode } from '@chakra-ui/theme-tools'
 import { BrowserRouter } from 'react-router-dom'
 
