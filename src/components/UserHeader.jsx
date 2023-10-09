@@ -34,7 +34,7 @@ const UserHeader = () => {
           </Flex>
         </Box>
         <Box>
-          <Avatar name="Tanjiro Kamado" src="/tanjiro.jpg" size={"2xl"}/>
+          <Avatar name="Tanjiro Kamado" src="/tanjiro.jpg" size={{base:"md",md:"2xl"}}/>
         </Box>
       </Flex>
       <Text>I want to kill Muzan!</Text>

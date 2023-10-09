@@ -7,7 +7,7 @@ const Actions = ({ liked, setLiked }) => {
       <svg
         aria-label="Like"
         color={liked ? "rgb(237, 73, 86)" : ""}
-        fill={liked ? "rgb(237, 73, 86)" : ""}
+        fill={liked ? "rgb(237, 73, 86)" : "transparent"}
         height={19}
         role="img"
         viewBox="0 0 24 22"
