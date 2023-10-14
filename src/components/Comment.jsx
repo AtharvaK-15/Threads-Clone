@@ -3,7 +3,7 @@ import { useState } from "react"
 import { BsThreeDots } from "react-icons/bs"
 import Actions from "./Actions"
 
-const Comment = () => {
+const Comment = ({comment,likes}) => {
     const [liked, setLiked] = useState(false)
   return (
     <>
@@ -17,16 +17,15 @@ const Comment = () => {
                         <BsThreeDots />
                     </Flex>
                 </Flex>
-                <Text>Any relevant comment</Text>
+                <Text>{comment}</Text>
                 <Actions liked={liked} setLiked={setLiked}/>
                 <Text fontSize={"sm"} color={"gray.light"}>
-                    {100+(liked?1:0)} likes
+                    {parseInt(likes)+(liked?1:0)} likes
                 </Text>
             </Flex>
         </Flex>
 
         <Divider my={4}/>
-        {/* <Comment /> */}
     </>
   )
 }

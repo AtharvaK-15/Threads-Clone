@@ -9,6 +9,7 @@ import Comment from "../components/Comment"
 
 const PostPage = () => {
   const [liked, setLiked] = useState(false)
+  // const [first, setfirst] = useState(second)
   return (
     <>
       <Flex>
@@ -42,19 +43,10 @@ const PostPage = () => {
         </Flex>
 
         <Divider my={4} />
-
-        <Flex justifyContent={"space-between"}>
-          <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"2xl"}>👋</Text>
-            <Text color={"gray.light"}>Get the app to like, reply and post</Text>
-          </Flex>
-          <Button>Get</Button>
-        </Flex>
-        <Divider my={4} />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
+        <Comment comment="Hey this is a comment through props" likes={100}/>
+        <Comment comment="Hey this is a comment through props" likes={100}/>
+        <Comment comment="Hey this is a comment through props" likes={100}/>
+        <Comment comment="Hey this is a comment through props" likes={100}/>
     </>
   )
 }
