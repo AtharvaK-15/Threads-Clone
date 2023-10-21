@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+// difference between schema and model
+
 const userSchema = mongoose.Schema({
     name:{
         type:String,
