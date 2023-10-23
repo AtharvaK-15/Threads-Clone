@@ -1,6 +1,7 @@
 import e from "express";
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
+import genTokenAndSetCookie from "../utils/helpers/GenToken&SetCookie.js";
 
 const signupUser = async (req,res)=>{
     try {
@@ -26,6 +27,10 @@ const signupUser = async (req,res)=>{
         await newUser.save();
 
         if(newUser){
+            // generate token and set cookie
+            
+            genTokenAndSetCookie(res,newUser._id);
+
             res.status(201).json({
                 _id:newUser._id,
                 name:newUser.name,
