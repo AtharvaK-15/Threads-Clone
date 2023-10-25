@@ -47,4 +47,29 @@ const signupUser = async (req,res)=>{
     }
 }
 
-export default signupUser;
+const loginUser = async (req,res)=>{
+    try {
+        const {username,password} = req.body;
+        const user = await User.findOne({username});
+        const isPasswordCorrect = await bcrypt.compare(password,user?.password || "");
+
+        if(!user || !isPasswordCorrect){
+            res.status(400).json({message:"Username or Password is incorrect"});
+        }
+
+        genTokenAndSetCookie(res,user._id);
+
+        res.status(200).json({
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            username:user.username,
+        }); 
+
+    } catch (error) {
+        res.status(500).json({message:"Server Error"});
+        console.log(error);
+    }
+}
+
+export {signupUser,loginUser};
