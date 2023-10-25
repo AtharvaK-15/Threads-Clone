@@ -72,4 +72,15 @@ const loginUser = async (req,res)=>{
     }
 }
 
-export {signupUser,loginUser};
+const logoutUser = (req,res)=>{
+    try {
+        res.clearCookie("token","",{maxAge:1});
+        res.status(200).json({message:"Logged out successfully"});
+    } catch (error) {
+        res.status(500).json({message:"Server Error"});
+        console.log(error);
+    }
+}
+
+
+export {signupUser,loginUser, logoutUser};
