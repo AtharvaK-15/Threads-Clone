@@ -1,6 +1,17 @@
 import User from "../models/userModel.js";
 import Post from "../models/postModel.js";
 
+const getPosts = async (req, res) => {
+    try {
+        const posts = await Post.findById(req.params.id);
+        if(!posts) return res.status(404).json({message:"Posts not found!"});
+        res.status(200).json({posts});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+        console.log("Error in getPosts: ",error.message);
+    }
+};
+
 const createPost = async (req, res) => {
     try {
         const {postedBy,text,img} = req.body;
@@ -27,4 +38,18 @@ const createPost = async (req, res) => {
     }
 }
 
-export default createPost;
+const deletePost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if(!post) return res.status(404).json({message:"Post not found!"});
+
+        if(post.postedBy.toString() !== req.user._id.toString()) return res.status(401).json({message:"Unauthorized!"}); //check if the user who is deleting is the same as the user who is logged in
+        await post.deleteOne({ _id: req.params.id });
+        res.status(200).json({message:"Post deleted successfully!"});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+        console.log("Error in deletePost: ",error.message);
+    }
+};
+
+export {getPosts,createPost, deletePost};
