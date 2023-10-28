@@ -3,6 +3,22 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import genTokenAndSetCookie from "../utils/helpers/GenToken&SetCookie.js";
 
+
+const getUserProfile = async (req,res)=>{
+    const {username} = req.params;
+    try {
+        const user = await User.findOne({username}).select("-password").select("-updatedAt") //select all fields except password
+        if(!user){
+            res.status(400).json({message:"User does not exist"});
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({message:"Server Error"});
+        console.log("Error in getUserProfile: ",error);
+    }
+}
+
+
 const signupUser = async (req,res)=>{
     try {
         const {name,email,username,password} = req.body;
@@ -110,11 +126,50 @@ const followUnfollowUser = async (req,res)=>{
             res.status(200).json({message:"Followed successfully"});
         }
 
-
     } catch (error) {
         res.status(500).json({message:"Server Error"});
         console.log("Error in followUnfollowUser: ",error);
+    }  
+}
+
+const updateUser = async (req,res)=>{
+    const {name,email,username,password,profilePic,bio} = req.body;
+    const userId = req.user._id; //_ means current user
+    try {
+        let user = await User.findById(userId);
+        if(!user){
+            res.status(400).json({message:"User does not exist"});
+        }
+
+        if(password){
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password,salt);
+            user.password = hashedPassword;
+        }
+
+        // update user
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.username = username || user.username;
+        user.profilePic = profilePic || user.profilePic;
+        user.bio = bio || user.bio;
+
+        user = await user.save();
+        res.status(200).json({
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            username:user.username,
+            profilePic:user.profilePic,
+            bio:user.bio,
+            followers:user.followers,
+            following:user.following
+        });
+
+    } catch (error) {
+        res.status(500).json({message:"Server Error"});
+        console.log("Error in updateUser: ",error);
     }
 }
 
-export {signupUser, loginUser, logoutUser, followUnfollowUser};
+export {signupUser, loginUser, logoutUser, followUnfollowUser, updateUser, getUserProfile};
