@@ -79,4 +79,33 @@ const likeUnlikePost = async (req, res) => {
     }
 };
 
-export {getPosts,createPost, deletePost, likeUnlikePost};
+const replytoPost = async (req, res) => {
+    try {
+        const {text} = req.body;
+        const postId = req.params.id;
+        const userId = req.user._id;
+        const userProfilePic = req.user.profilePic;
+        const userName = req.user.name;
+        
+        if(!text) return res.status(400).json({message:"Text field is required!"});
+
+        const post = await Post.findById(postId);
+        if(!post) return res.status(404).json({message:"Post not found!"});
+
+        const reply = {
+            userId,
+            text,
+            userProfilePic,
+            userName,
+        };
+        post.replies.push(reply);
+        await post.save();
+        res.status(200).json({message:"Post replied successfully!", post});
+
+    } catch (error) {
+        res.status(500).json({message:error.message});
+        console.log("Error in replytoPost: ",error.message);
+    }
+};
+
+export {getPosts,createPost, deletePost, likeUnlikePost, replytoPost};
