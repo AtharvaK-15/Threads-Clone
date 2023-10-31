@@ -36,11 +36,28 @@ export default function SignupCard() {
     }));
   };
 
-  const handleSignup = () => {
-    console.log("Signup clicked");
-    console.log(inputs);
-
+  const handleSignup = async () => {
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(inputs)
+      });
+      
+      const data = await res.json();
+      
+      if (data.error) {
+        alert(data.error);
+      } else {
+        localStorage.setItem("user-info", JSON.stringify(data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+  
 
   return (
     <Flex
