@@ -18,6 +18,8 @@ import {
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useSetRecoilState } from 'recoil';
 import { authScreenAtom } from '../atoms/authAtom';
+import useShowToast from '../../hooks/useShowToast';
+import { userAtom } from '../atoms/userAtom';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,9 +38,12 @@ export default function SignupCard() {
     }));
   };
 
+  const showToast = useShowToast();
+  const setUser = useSetRecoilState(userAtom);
+
   const handleSignup = async () => {
     try {
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch("/api/users/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -49,12 +54,22 @@ export default function SignupCard() {
       const data = await res.json();
       
       if (data.error) {
-        alert(data.error);
+        showToast({
+          status: "error",
+          title: "Signup failed",
+          description: data.error
+        });
       } else {
         localStorage.setItem("user-info", JSON.stringify(data));
+        setUser(data);
       }
     } catch (error) {
       console.log(error);
+      showToast({
+        status: "error",
+        title: "Signup failed",
+        description: error.message
+      });
     }
   };
   
