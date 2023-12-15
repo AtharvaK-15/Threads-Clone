@@ -15,6 +15,8 @@ const getUserProfile = async (req,res)=>{
     } catch (error) {
         res.status(500).json({message:"Server Error"});
         console.log("Error in getUserProfile: ",error);
+        //sending error in the frontend in the form of an alert
+        alert("Error in getUserProfile");
     }
 }
 
@@ -69,7 +71,7 @@ const loginUser = async (req,res)=>{
         const isPasswordCorrect = await bcrypt.compare(password,user?.password || "");
 
         if(!user || !isPasswordCorrect){
-            res.status(400).json({message:"Username or Password is incorrect"});
+            res.status(400).json({error:"Username or Password is incorrect"});
         }
 
         genTokenAndSetCookie(res,user._id);
@@ -139,7 +141,6 @@ const updateUser = async (req,res)=>{
         if(!user){
             res.status(400).json({message:"User does not exist"});
         }
-
         if(password){
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password,salt);
