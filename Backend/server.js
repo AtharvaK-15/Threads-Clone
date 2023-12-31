@@ -17,8 +17,9 @@ cloudinary.config({
     api_secret:process.env.CLOUDINARY_API_SECRET
 });
 
-app.use(express.json());  //to parse json data in the req body
+// app.use(express.json());  //to parse json data in the req body
 app.use(express.urlencoded({extended:true}));
+app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 
 app.use("/api/users",userRoutes);

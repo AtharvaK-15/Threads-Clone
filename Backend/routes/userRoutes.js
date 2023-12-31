@@ -9,7 +9,7 @@ router.post("/signup",signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.post("/follow/:id", protectRoute , followUnfollowUser); //id is variable here
-router.post("/update/:id", protectRoute , updateUser); //id is variable here
+router.put("/update/:id", protectRoute , updateUser); //id is variable here
 
 export default router;
 
