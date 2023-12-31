@@ -34,7 +34,25 @@ const UpdateProfile = () => {
 
   console.log(user,"user is here!")
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await fetch (`/api/users/update/${user._id}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({...inputs, profilePic: imgURL || user.profilePic})
+      })
+      const data = await res.json()
+      console.log(data)
+    } 
+    
+    catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
+    <form onSubmit={handleSubmit}>
     <Flex
       align={'center'}
       justify={'center'}>
@@ -72,7 +90,7 @@ const UpdateProfile = () => {
           </Stack>
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl >
           <FormLabel>Full Name</FormLabel>
           <Input placeholder='Atharva Kulkarni' 
             value={inputs.name}
@@ -82,7 +100,7 @@ const UpdateProfile = () => {
           />
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl >
           <FormLabel>Username</FormLabel>
           <Input placeholder='Username'
             value={inputs.username} 
@@ -92,7 +110,7 @@ const UpdateProfile = () => {
           />
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl >
           <FormLabel>Email</FormLabel>
           <Input placeholder='your_email@example.com' 
             value={inputs.email}
@@ -102,7 +120,7 @@ const UpdateProfile = () => {
           />
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl >
           <FormLabel>Bio</FormLabel>
           <Input placeholder='Your Bio' 
             value={inputs.bio}
@@ -112,7 +130,7 @@ const UpdateProfile = () => {
           />
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl >
           <FormLabel>Password</FormLabel>
           <Input placeholder='Password' 
             value={inputs.password}
@@ -140,6 +158,7 @@ const UpdateProfile = () => {
             _hover={{
               bg: 'blue.500',
             }}
+            type='submit'
           >
             Submit
           </Button>
@@ -150,6 +169,7 @@ const UpdateProfile = () => {
       </Stack>
 
     </Flex>
+    </form>
   )
 }
 
