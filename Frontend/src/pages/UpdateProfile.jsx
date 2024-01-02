@@ -27,6 +27,8 @@ const UpdateProfile = () => {
     name: user.name,
   })
 
+  const [updating, setUpdating] = useState(false)
+
   const fileRef = useRef(null);
 
   const {handleImgChange,imgURL} = usePreviewImg()
@@ -36,7 +38,9 @@ const UpdateProfile = () => {
   // console.log(user.profilePic,"user profile pic ")
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if(updating) return
+    setUpdating(true)
     try {
       const res = await fetch(`/api/users/update/${user._id}`, {
         method: 'PUT',
@@ -52,6 +56,8 @@ const UpdateProfile = () => {
     
     catch (error) {
       console.log(error)
+    }finally{
+      setUpdating(false)
     }
   }
 
@@ -163,6 +169,7 @@ const UpdateProfile = () => {
               bg: 'blue.500',
             }}
             type='submit'
+            isLoading={updating}
           >
             Submit
           </Button>
