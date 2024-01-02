@@ -3,10 +3,9 @@ import { Avatar, Menu, MenuButton, MenuList, MenuItem, useToast} from "@chakra-u
 import { BsInstagram }  from "react-icons/bs" 
 import { CgMoreO } from "react-icons/cg"
 import { Portal } from "@chakra-ui/react"
-// import { Toast } from "@chakra-ui/react"
+import PropTypes from 'prop-types';
 
-
-const UserHeader = () => {
+const UserHeader = ({user}) => {
   const toast = useToast()
    const copyURL = () =>{
     const currentURL = window.location.href;
@@ -25,23 +24,34 @@ const UserHeader = () => {
     <VStack gap={4} alignItems={"start"}>
       <Flex justifyContent={"space-between"} width={"full"}>
         <Box>
-          <Text fontSize={"2xl"} fontWeight={"bold"}>Tanjiro Kamado</Text>
+          {/* want to fix this props */}
+          <Text fontSize={"2xl"} fontWeight={"bold"}>{user ? user.name : "Loading..."}</Text>
           <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"sm"}>kamadotanjiro</Text>
+            <Text fontSize={"sm"}>{user ? user.username : "Loading..."}</Text>
             <Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"}>
               threads.net
             </Text>
           </Flex>
         </Box>
         <Box>
-          <Avatar name="Tanjiro Kamado" src="/tanjiro.jpg" size={{base:"md",md:"2xl"}}/>
+          {user ? user.profilePic ? <Avatar size={{
+            base:'md',
+            md: 'xl',
+          }} src={user.profilePic} /> : <Avatar size={"lg"} /> : "Loading..." }
+
+          {/* if no user profile pic: */}
+          {/* {!user.profilePic ? <Avatar size={{
+            base:'md',
+            md: 'xl',
+          }} src="https://bit.ly/broken-link" /> : <Avatar size={"lg"} />} */}
+
         </Box>
       </Flex>
-      <Text>I want to kill Muzan!</Text>
+      <Text>{user ? user.bio : "Loading..."}</Text>
 
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
-          <Text color={"gray.light"}>6.9k Followers</Text>
+          <Text color={"gray.light"}>{user ? user.followers.length : "Loading..."} Followers</Text>
           <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
           <Link color={"gray.light"}>instagram.com</Link>
         </Flex>
@@ -76,5 +86,9 @@ const UserHeader = () => {
     </VStack>
   )
 }
+
+UserHeader.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
 export default UserHeader   

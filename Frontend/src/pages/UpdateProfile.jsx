@@ -32,7 +32,8 @@ const UpdateProfile = () => {
   const {handleImgChange,imgURL} = usePreviewImg()
 
 
-  console.log(user,"user is here!")
+  console.log(user,"user is here!") 
+  // console.log(user.profilePic,"user profile pic ")
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -40,10 +41,13 @@ const UpdateProfile = () => {
       const res = await fetch(`/api/users/update/${user._id}`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({...inputs, profilePic: imgURL || user.profilePic})
+        body: JSON.stringify({...inputs, profilePic: imgURL})
       })
       const data = await res.json()
       console.log(data)
+      setUser(data)
+      localStorage.setItem('user-threads', JSON.stringify(data))
+      alert('Profile Updated Successfully!')
     } 
     
     catch (error) {
