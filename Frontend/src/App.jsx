@@ -9,6 +9,7 @@ import UpdateProfile from './pages/UpdateProfile'
 import { useRecoilValue } from 'recoil'
 import { userAtom } from './atoms/userAtom.js'
 import LogoutButton from './components/LogoutButton'
+import CreatePost from './components/CreatePost'
 
 const App = () => {
   const user = useRecoilValue(userAtom)
@@ -25,7 +26,10 @@ const App = () => {
         <Route path="/:username/post/:pid" element={<PostPage />}/>
       </Routes>
 
-      {user && <LogoutButton />}
+      {/* if user is logged in show logout button */}
+      {user && <LogoutButton />} 
+      {user && <CreatePost />}
+       
     </Container>
   )
 }
