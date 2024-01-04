@@ -7,18 +7,56 @@ import { useState } from 'react'
 import { useRef } from 'react'
 import usePreviewImg from '../../hooks/usePreviewImg'
 import { BsFillImageFill } from 'react-icons/bs'
+import { useRecoilValue } from 'recoil'
+import { userAtom } from "../atoms/userAtom"
+const Max_char = 500
 
 const CreatePost = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [postText, setPostText] = useState('')
     const {handleImgChange,imgURL,setImgURL} = usePreviewImg()
     const fileRef = useRef(null);
+    const [remainingChar, setRemainingChar] = useState(Max_char)
+    const user = useRecoilValue(userAtom)
+    const [loading, setLoading] = useState(false)
 
-    const handletextchange = () => {
+    const handletextchange = (e) => {
+      const inputText = e.target.value;
+      if(inputText.length > Max_char){
+        const truncatedText = inputText.slice(0,Max_char);
+        setPostText(truncatedText);
+        setRemainingChar(0)
+      }else{
+        setPostText(inputText);
+        setRemainingChar(Max_char - inputText.length)
+      }
+
     }
 
     const handleCreatePost = async () => {
-
+      setLoading(true)
+      try {
+        const res = await fetch('/api/posts/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({postedBy: user._id, text: postText, img: imgURL}),
+        })
+        const data = await res.json()
+        if(data.error){
+          console.log(data.error)
+        }
+        alert('Post Created')
+        console.log(data)
+        onClose()
+        setPostText('')
+        setImgURL('')
+      } catch (error) {
+        console.log(error)
+      }finally{
+        setLoading(false)
+      }
     }
 
   return (
@@ -47,7 +85,7 @@ const CreatePost = () => {
                 <Text fontSize={'xs'} fontWeight={'bold'} textAlign={'right'}
                     m={1} color={'gray.800'}
                 >
-                    500/500
+                    {remainingChar}/{Max_char}
                 </Text>
 
                 <Input 
@@ -80,7 +118,7 @@ const CreatePost = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={handleCreatePost}>
+            <Button colorScheme='blue' mr={3} onClick={handleCreatePost} isLoading={loading}>
               Post
             </Button>
           </ModalFooter>
