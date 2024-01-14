@@ -1,7 +1,7 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Spinner } from "@chakra-ui/spinner";
+import Post from "../components/Post";
 
 const HomePage = () => {
     const [posts, setPosts] = useState([]);
@@ -38,6 +38,10 @@ const HomePage = () => {
                 {!loading && posts.length === 0 && (
                     <h1>Follow some users to see feed posts</h1>
                 )}
+
+                {posts.map((post) => (
+                    <Post key={post._id} post={post} />
+                ))}
             </>
         )}
 
