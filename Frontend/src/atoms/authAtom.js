@@ -5,4 +5,4 @@ const authScreenAtom = atom({
 	default: "login",
 });
 
-export  {authScreenAtom};
+export default authScreenAtom;

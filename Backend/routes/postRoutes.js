@@ -1,14 +1,23 @@
 import express from "express";
+import {
+	createPost,
+	deletePost,
+	getPost,
+	likeUnlikePost,
+	replyToPost,
+	getFeedPosts,
+	getUserPosts,
+} from "../controllers/postController.js";
 import protectRoute from "../middlewares/protectRoute.js";
-import {getPosts,createPost, deletePost, likeUnlikePost, replytoPost, getFeed} from "../controllers/postController.js";
 
 const router = express.Router();
 
-router.get("/:id", getPosts); //get all posts (tweets/threads
-router.post("/create", protectRoute ,createPost); //create a post
-router.delete("/:id",protectRoute ,deletePost); //delete a post
-router.post("/like/:id",protectRoute, likeUnlikePost);
-router.post("/reply/:id",protectRoute, replytoPost);
-router.get("/feed/:id", protectRoute, getFeed);
+router.get("/feed", protectRoute, getFeedPosts);
+router.get("/:id", getPost);
+router.get("/user/:username", getUserPosts);
+router.post("/create", protectRoute, createPost);
+router.delete("/:id", protectRoute, deletePost);
+router.put("/like/:id", protectRoute, likeUnlikePost);
+router.put("/reply/:id", protectRoute, replyToPost);
 
 export default router;
