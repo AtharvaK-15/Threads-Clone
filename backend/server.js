@@ -24,10 +24,14 @@ cloudinary.config({
 app.use(express.json({ limit: "50mb" })); // To parse JSON data in the req.body
 app.use(express.urlencoded({ extended: true })); // To parse form data in the req.body
 app.use(cookieParser());
+app.use(express.static("public"))
 
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoutes);
+app.get("*", (req, res) => {
+	res.sendFile("index.html", { root: "public" });
+});
 
 server.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`));
